@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { BooksController } from './books/book.controller';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { Book } from './books/book.model';
+import { AppController } from './root/root.controller';
 
 @Module({
   imports: [
@@ -14,7 +15,7 @@ import { Book } from './books/book.model';
     }),
     SequelizeModule.forFeature([Book]),
   ],
-  controllers: [BooksController],
+  controllers: [BooksController, AppController],
   providers: [],
 })
 export class AppModule {}

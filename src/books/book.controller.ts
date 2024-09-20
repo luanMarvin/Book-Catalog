@@ -17,12 +17,12 @@ export class BooksController {
   }
 
   @Get() // READ
-  async findAll(@Query('name') name?: string): Promise<Book[]> {
-    if (name) {
+  async findAll(@Query('title') title?: string): Promise<Book[]> {
+    if (title) {
       return this.bookModel.findAll({
         where: {
           title: {
-            [Op.like]: `%${name}%`,
+            [Op.like]: `%${title}%`,
           },
         },
       });
@@ -41,12 +41,15 @@ export class BooksController {
   }
 
   @Delete() // DELETE
-  async remove(@Body() body: { id: string }): Promise<Book> {
+  async remove(@Body() body: { id: string }): Promise<{message: string, book:Book}> {
     const book = await this.bookModel.findByPk(body.id);
     if (!book) {
       throw new NotFoundException('Book Not Found');
     }
     await book.destroy();
-    return book;
+    return ({
+      message: "Book deleted",
+      book: book
+    });
   }
 }
